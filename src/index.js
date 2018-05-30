@@ -1,3 +1,6 @@
+import './css/main.css';
+const Game = require('./js/Game');
+
 let game=new Game();
 game.init();
 game._addFailedFn(failed);

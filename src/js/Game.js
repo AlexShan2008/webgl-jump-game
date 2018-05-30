@@ -1,3 +1,5 @@
+const THREE = require('three');
+const DATA_CUBES = require('./cubes');
 class Game {
   constructor() {
     this.config = {
@@ -6,13 +8,13 @@ class Game {
       cubeStep: 6, // 默认下一个块出现的距离
       background: 0x282828,
       ground: -1,
-      cubeColor: 0xbebebe,
+      cubeColor: 0x3db389,
       cubeWidth: 4,
       cubeHeight: 2,
       cubeDeep: 4,
-      jumperColor: 0x3367d6,
+      jumperColor: 0xFF0000,
       jumperWidth: 1,
-      jumperHeight: 1.8,
+      jumperHeight: 2,
       jumperDeep: 1
     };
     this.score = 0; // 分数
@@ -77,12 +79,12 @@ class Game {
 
   _setDefaultConfig() {
     this._setCubeStep(4);
-    this.config.cubeWidth -= 1;
-    this.config.cubeHeight -= 0.3;
-    this.config.cubeDeep -= 1;
-    this.config.jumperWidth -= 0.2;
-    this.config.jumperHeight -= 0.2;
-    this.config.jumperDeep -= 0.2;
+    this.config.cubeWidth = 3;
+    this.config.cubeHeight = 1.8;
+    this.config.cubeDeep = 3;
+    this.config.jumperWidth = 0.8;
+    this.config.jumperHeight = 1.8;
+    this.config.jumperDeep = 0.8;
   }
 
   _checkUserAgent() {
@@ -119,9 +121,15 @@ class Game {
   }
 
   _handleMouseDown() {
+    let currCube = this.cubes[this.cubes.length - 2];
     if (!this.jumperStat.ready && this.jumper.scale.y > 0.02) {
       this.jumper.scale.y -= 0.01; // 压缩比例
-      this.jumperStat.xSpeed += 0.01; // 0.004
+      this.jumper.scale.y = this.jumper.scale.y < 0.5 ? 0.5 : this.jumper.scale.y;
+      currCube.scale.y -= 0.01; // 压缩比例
+      currCube.scale.y = currCube.scale.y < 0.5 ? 0.5 : currCube.scale.y;
+      
+
+      this.jumperStat.xSpeed += 0.006; // 0.004
       this.jumperStat.ySpeed += 0.01; // 0.008
       this._render();
       requestAnimationFrame(() => {
@@ -138,6 +146,11 @@ class Game {
         // 恢复压缩前高度
         this.jumper.scale.y += 0.1;
       }
+      if (this.cubes[this.cubes.length - 2].scale.y < 1) {
+        // 恢复压缩前高度
+        this.cubes[this.cubes.length - 2].scale.y += 0.02; // 压缩比例
+      }
+
       if (this.cubeStat.nextDir === "left") {
         this.jumper.position.x -= this.jumperStat.xSpeed;
       } else {
@@ -307,6 +320,7 @@ class Game {
       cube.position.x = this.cubes[this.cubes.length - 1].position.x;
       cube.position.y = this.cubes[this.cubes.length - 1].position.y;
       cube.position.z = this.cubes[this.cubes.length - 1].position.z;
+
       this.cubeStat.nextDir = Math.random() > 0.5 ? "left" : "right";
       if (this.cubeStat.nextDir === "left") {
         cube.position.x = cube.position.x - this._getCubeStep();
@@ -418,3 +432,5 @@ class Game {
     this._start();
   }
 }
+
+module.exports = Game;

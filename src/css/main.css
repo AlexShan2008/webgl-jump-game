@@ -42,11 +42,28 @@ html,body{
   font-weight: bold;
   margin-top: 20px;
 }
+.row-btn{
+  width: 100%;
+  text-align: center;
+}
+.back-home-wrap{
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+}
+.back-home{
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  margin-bottom: 20px;
+  background:url('../images/home.png') no-repeat center;
+  background-size: contain;
+}
 button.restart{
   width: 200px;
   height: 48px;
+  background-color: #ffffff;
   border-radius: 24px;
-  background: white;
   border: none;
   font-weight: bold;
   font-size: 20px;
